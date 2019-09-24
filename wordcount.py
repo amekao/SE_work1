@@ -113,12 +113,17 @@ def traverse_file(f_p, f_n):
     """
     # 全局变量dicList，存放py文件名
     global dicList
+    global fileList
 
     # 当前目录下的文件列表
+    try:
+        fileList = os.listdir(f_p)
+    except WindowsError:
+        pass
+    except PermissionError:
+        pass
 
-    file_list = os.listdir(f_p)
-
-    for file in file_list:  # 以列表的形式返回该目录下的所有文件
+    for file in fileList:  # 以列表的形式返回该目录下的所有文件
         newpath = os.path.join(f_p, file)  # 将每一个文件拼接成绝对路径
 
         # 判断是否为目录
