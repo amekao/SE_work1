@@ -153,6 +153,7 @@ def output(f_i):
     except:
         print("文件打开失败，请重新运行程序")
         sys.exit()
+
     print(f_i)
     if c_mode is True:
         print(f'字数: {char_count(open_file)}')
@@ -164,7 +165,10 @@ def output(f_i):
         print(f'行数: {line_count(open_file)}')
     if a_mode is True:
         l_list = complex_line_count(open_file)
-        print(f'注释行: {l_list[0]}  空白行: {l_list[1]}  代码行: {l_list[2]}')
+        if fnmatch(f_i, '*.cpp') or fnmatch(f_i, '*.c') is True:
+            print(f'注释行: {l_list[0]}  空白行: {l_list[1]}  代码行: {l_list[2]}')
+        else:  # 非C语言注释样式可能不同
+            print(f'代码和注释行: {l_list[0] + l_list[2]}  空白行: {l_list[1]}')
     if w_mode is True:
         print(f'词数: {word_count(open_file)}')
 
@@ -182,14 +186,14 @@ if __name__ == '__main__':
     -w  返回文件词数
     -l  返回文件行数
     -b  返回文件详细字符数（数字/字母/空格/换行符/制表符/标点）
-    -a  返回文件详细行数（代码行/空行/注释行）  
+    -a  返回文件详细行数（代码行/空行/注释行(仅C语言)）  
 特殊参数：-s -x
     -s  寻找指定路径下所有符合通配符的文件并计算
     -x  弹出文件选择窗口，-c -w -l -b -a五种统计信息全显示
 --------------------------------------------------------------
 用法示例：
     wc.exe -w -b -a file.py  
-    返回文件file.py的词数，详细字符数，详细行数
+    返回文件file.py的词数，详细字符数，详细行数（代码行和空行）
     wc.exe -s -a /dir/*.c
     返回在路径dir下所有后缀为c的文件的详细行数
     wc.exe -x
